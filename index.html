@@ -4,61 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Euromilhões PWA</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <style>
-        .bola {
-            width: 50px;
-            height: 50px;
-            line-height: 50px;
-            border-radius: 50%;
-            display: inline-block;
-            text-align: center;
-            margin: 5px;
-            font-weight: bold;
-        }
-
-        .numero {
-            background-color: #ffc107;
-            color: #000;
-        }
-
-        .estrela {
-            background-color: #0d6efd;
-            color: #fff;
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            width: 60px;
-            height: 60px;
-            line-height: 65px;
-        }
+        .bola { width: 40px; height: 40px; line-height: 40px; border-radius: 50%; display: inline-block; text-align: center; margin: 3px; font-weight: bold; font-size: 0.9rem; }
+        .numero { background-color: #ffc107; color: #000; }
+        .estrela { background-color: #0d6efd; color: #fff; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); width: 45px; height: 45px; line-height: 48px; }
+        .chave-row { border-bottom: 1px solid #444; padding: 15px 0; }
     </style>
 </head>
 <body class="bg-dark text-white text-center p-4">
-<h1 class="mb-4">Gerador Euromilhões</h1>
-<div id="resultado" class="my-4"></div>
-<button class="btn btn-warning btn-lg" onclick="gerarChave()">Gerar Chave</button>
-<script>
-function gerarChave() {
-    const res = document.getElementById('resultado');
-    res.innerHTML = '';
-    // 5 números
-    let nums = new Set();
-    while(nums.size < 5) {
-        nums.add(Math.floor(Math.random() * 50) + 1);
-    }
-    [...nums].sort((a,b)=>a-b).forEach(n=>{
-        res.innerHTML += `<div class="bola numero">${n}</div>`;
-    });
-    // 2 estrelas
-    let ests = new Set();
-    while(ests.size < 2) {
-        ests.add(Math.floor(Math.random() * 12) + 1);
-    }
+    <h1>Gerador Euromilhões</h1>
+    
+    <div class="container mt-4" style="max-width: 400px;">
+        <label class="form-label">Quantas chaves queres?</label>
+        <div class="input-group mb-3">
+            <input type="number" id="numChaves" class="form-control" value="1" min="1" max="10">
+            <button class="btn btn-warning" onclick="gerarVarias()">Gerar</button>
+        </div>
+    </div>
 
-    [...ests].sort((a,b)=>a-b).forEach(e=>{
-        res.innerHTML += `<div class="bola estrela">${e}</div>`;
-    });
-}
-</script>
+    <div id="resultado" class="mt-4"></div>
+
+    <script>
+        function gerarVarias() {
+            const quantidade = document.getElementById('numChaves').value;
+            const res = document.getElementById('resultado');
+            res.innerHTML = ''; // Limpar resultados anteriores
+
+            for (let i = 0; i < quantidade; i++) {
+                const divChave = document.createElement('div');
+                divChave.className = 'chave-row';
+                divChave.innerHTML = `<h5>Chave ${i+1}</h5>` + criarChave();
+                res.appendChild(divChave);
+            }
+        }
+
+        function criarChave() {
+            let html = '';
+            // 5 Números (1-50)
+            let nums = new Set();
+            while(nums.size < 5) nums.add(Math.floor(Math.random() * 50) + 1);
+            [...nums].sort((a,b)=>a-b).forEach(n => html += `<div class="bola numero">${n}</div>`);
+
+            // 2 Estrelas (1-12)
+            let ests = new Set();
+            while(ests.size < 2) ests.add(Math.floor(Math.random() * 12) + 1);
+            [...ests].sort((a,b)=>a-b).forEach(e => html += `<div class="bola estrela">${e}</div>`);
+            
+            return html;
+        }
+    </script>
 </body>
 </html>
