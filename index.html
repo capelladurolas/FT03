@@ -3,56 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Euromilhões PWA</title>
+    <title>Euromilhões</title>
     <link href="https://cdn.jsdelivr.net" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <style>
-        .bola { width: 40px; height: 40px; line-height: 40px; border-radius: 50%; display: inline-block; text-align: center; margin: 3px; font-weight: bold; font-size: 0.9rem; }
-        .numero { background-color: #ffc107; color: #000; }
-        .estrela { background-color: #0d6efd; color: #fff; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); width: 45px; height: 45px; line-height: 48px; }
-        .chave-row { border-bottom: 1px solid #444; padding: 15px 0; }
+        .bola { width: 40px; height: 40px; line-height: 40px; border-radius: 50%; display: inline-block; text-align: center; margin: 5px; font-weight: bold; }
+        .n { background: #ffc107; color: #000; }
+        .e { background: #0d6efd; color: #fff; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); width: 45px; height: 45px; line-height: 50px; }
+        .chave { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 8px; background: #fff; color: #000; }
     </style>
 </head>
-<body class="bg-dark text-white text-center p-4">
-    <h1>Gerador Euromilhões</h1>
-    
-    <div class="container mt-4" style="max-width: 400px;">
-        <label class="form-label">Quantas chaves queres?</label>
-        <div class="input-group mb-3">
-            <input type="number" id="numChaves" class="form-control" value="1" min="1" max="10">
-            <button class="btn btn-warning" onclick="gerarVarias()">Gerar</button>
+<body class="bg-light p-4 text-center">
+
+    <div class="container" style="max-width: 500px;">
+        <h2 class="mb-4">Gerador Euromilhões</h2>
+        
+        <!-- BOX DE SELEÇÃO -->
+        <div class="card p-3 mb-4 shadow-sm">
+            <label class="form-label">Quantas chaves queres gerar?</label>
+            <input type="number" id="qtd" class="form-control mb-3 text-center" value="1" min="1" max="10">
+            <button onclick="gerar()" class="btn btn-success w-100">Gerar Chaves</button>
         </div>
+
+        <!-- ÁREA DOS RESULTADOS -->
+        <div id="resultados"></div>
     </div>
 
-    <div id="resultado" class="mt-4"></div>
-
     <script>
-        function gerarVarias() {
-            const quantidade = document.getElementById('numChaves').value;
-            const res = document.getElementById('resultado');
-            res.innerHTML = ''; // Limpar resultados anteriores
+        function gerar() {
+            const qtd = document.getElementById('qtd').value;
+            const res = document.getElementById('resultados');
+            res.innerHTML = ''; // Limpa as anteriores
 
-            for (let i = 0; i < quantidade; i++) {
-                const divChave = document.createElement('div');
-                divChave.className = 'chave-row';
-                divChave.innerHTML = `<h5>Chave ${i+1}</h5>` + criarChave();
-                res.appendChild(divChave);
+            for (let i = 0; i < qtd; i++) {
+                let nums = new Set();
+                while(nums.size < 5) nums.add(Math.floor(Math.random() * 50) + 1);
+                let ests = new Set();
+                while(ests.size < 2) ests.add(Math.floor(Math.random() * 12) + 1);
+
+                let html = `<div class="chave shadow-sm"><strong>Chave ${i+1}:</strong><br>`;
+                [...nums].sort((a,b)=>a-b).forEach(n => html += `<div class="bola n">${n}</div>`);
+                [...ests].sort((a,b)=>a-b).forEach(e => html += `<div class="bola e">${e}</div>`);
+                html += `</div>`;
+                
+                res.innerHTML += html;
             }
-        }
-
-        function criarChave() {
-            let html = '';
-            // 5 Números (1-50)
-            let nums = new Set();
-            while(nums.size < 5) nums.add(Math.floor(Math.random() * 50) + 1);
-            [...nums].sort((a,b)=>a-b).forEach(n => html += `<div class="bola numero">${n}</div>`);
-
-            // 2 Estrelas (1-12)
-            let ests = new Set();
-            while(ests.size < 2) ests.add(Math.floor(Math.random() * 12) + 1);
-            [...ests].sort((a,b)=>a-b).forEach(e => html += `<div class="bola estrela">${e}</div>`);
-            
-            return html;
         }
     </script>
 </body>
