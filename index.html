@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euromilhões PWA</title>
+    <link href="https://cdn.jsdelivr.net" rel="stylesheet">
+    <!-- a) Link para o Manifesto -->
+    <link rel="manifest" href="manifest.json">
+    <style>
+        .bola { width: 50px; height: 50px; line-height: 50px; border-radius: 50%; display: inline-block; text-align: center; margin: 5px; font-weight: bold; }
+        .numero { background-color: #ffc107; color: #000; }
+        .estrela { background-color: #0d6efd; color: #fff; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); width: 60px; height: 60px; line-height: 65px; }
+    </style>
+</head>
+<body class="bg-dark text-white text-center p-4">
+    <h1>Gerador Euromilhões</h1>
+    <div id="resultado" class="my-4"></div>
+    <button class="btn btn-warning btn-lg" onclick="gerarChave()">Gerar Chave</button>
+
+    <script>
+        function gerarChave() {
+            const res = document.getElementById('resultado');
+            res.innerHTML = '';
+            // 5 Números (1-50)
+            let nums = new Set();
+            while(nums.size < 5) nums.add(Math.floor(Math.random() * 50) + 1);
+            [...nums].sort((a,b)=>a-b).forEach(n => {
+                res.innerHTML += `<div class="bola numero">${n}</div>`;
+            });
+            // 2 Estrelas (1-12)
+            let ests = new Set();
+            while(ests.size < 2) ests.add(Math.floor(Math.random() * 12) + 1);
+            [...ests].sort((a,b)=>a-b).forEach(e => {
+                res.innerHTML += `<div class="bola estrela">${e}</div>`;
+            });
+        }
+    </script>
+</body>
+</html>
