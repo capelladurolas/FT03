@@ -1,95 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador Euromilhões</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador Euromilhões</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        .bola{
-            width:50px;
-            height:50px;
-            line-height:50px;
-            border-radius:50%;
-            display:inline-block;
-            text-align:center;
-            margin:5px;
-            font-weight:bold;
-        }
+<style>
+.bola{
+    width:50px;
+    height:50px;
+    line-height:50px;
+    border-radius:50%;
+    display:inline-block;
+    text-align:center;
+    margin:5px;
+    font-weight:bold;
+}
 
-        .numero{
-            background:#ffc107;
-            color:#000;
-        }
+.numero{
+    background:#ffc107;
+    color:black;
+}
 
-        .estrela{
-            background:#0d6efd;
-            color:#fff;
-            clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
-            width:60px;
-            height:60px;
-            line-height:65px;
-        }
+.estrela{
+    background:#0d6efd;
+    color:white;
+    clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);
+    width:60px;
+    height:60px;
+    line-height:60px;
+}
 
-        .chave{
-            margin-bottom:15px;
-        }
-    </style>
+.chave{
+    margin-bottom:15px;
+}
+</style>
+
 </head>
 
-<body class="bg-dark text-white text-center p-4">
+<body class="bg-dark text-white">
+
+<div class="container text-center py-5">
 
 <h1 class="mb-4">Gerador Euromilhões</h1>
 
-<!-- Selecionar quantidade -->
-<div class="mb-4">
-    <label class="form-label">Quantas chaves quer gerar?</label>
-    <input type="number" id="quantidade" class="form-control w-25 mx-auto" min="1" max="20" value="1">
+<div class="row justify-content-center mb-3">
+<div class="col-md-4">
+<label class="form-label">Quantas chaves quer gerar?</label>
+<input type="number" id="quantidade" class="form-control text-center" value="1" min="1" max="20">
+</div>
 </div>
 
 <button class="btn btn-warning btn-lg mb-4" onclick="gerarChaves()">Gerar Chaves</button>
 
 <div id="resultado"></div>
 
+</div>
+
 <script>
 
 function gerarChaves(){
 
-    const res = document.getElementById("resultado");
-    const qtd = document.getElementById("quantidade").value;
+const res = document.getElementById("resultado");
+const qtd = document.getElementById("quantidade").value;
 
-    res.innerHTML = "";
+res.innerHTML="";
 
-    for(let i=0;i<qtd;i++){
+for(let i=0;i<qtd;i++){
 
-        let chave = document.createElement("div");
-        chave.className="chave";
+let chave=document.createElement("div");
+chave.className="chave";
 
-        // números
-        let nums = new Set();
-        while(nums.size<5){
-            nums.add(Math.floor(Math.random()*50)+1);
-        }
+let nums=new Set();
 
-        [...nums].sort((a,b)=>a-b).forEach(n=>{
-            chave.innerHTML += `<span class="bola numero">${n}</span>`;
-        });
+while(nums.size<5){
+nums.add(Math.floor(Math.random()*50)+1);
+}
 
-        // estrelas
-        let ests = new Set();
-        while(ests.size<2){
-            ests.add(Math.floor(Math.random()*12)+1);
-        }
+[...nums].sort((a,b)=>a-b).forEach(n=>{
+chave.innerHTML+=`<span class="bola numero">${n}</span>`;
+});
 
-        [...ests].sort((a,b)=>a-b).forEach(e=>{
-            chave.innerHTML += `<span class="bola estrela">${e}</span>`;
-        });
+let ests=new Set();
 
-        res.appendChild(chave);
-    }
+while(ests.size<2){
+ests.add(Math.floor(Math.random()*12)+1);
+}
+
+[...ests].sort((a,b)=>a-b).forEach(e=>{
+chave.innerHTML+=`<span class="bola estrela">${e}</span>`;
+});
+
+res.appendChild(chave);
+
+}
 
 }
 
